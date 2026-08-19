@@ -15,6 +15,18 @@ Navigation is three audience tracks — students, searchers, investors — plus 
 overview. Business owners live in a section on the investors page rather than owning a
 page of their own.
 
+## Picking this back up later
+
+Everything needed lives in this folder and it's under git — `git log` shows the history.
+
+```
+python3 -m http.server 8899          # then open http://localhost:8899
+python3 build-preview.py ~/Desktop/USC-Search-Fund-draft.html --standalone
+```
+
+The second command regenerates the single-file copy for emailing. Run it after any edit
+to the pages or the stylesheet, or the shared copy goes stale.
+
 ## Preview
 
 Double-click `index.html`, or:
