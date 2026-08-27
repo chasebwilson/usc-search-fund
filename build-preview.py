@@ -10,7 +10,7 @@ Two output forms, deliberately different:
   (default)      Artifact/embed form: JS hash routing, five switchable pages.
                  No document wrapper; the host supplies doctype/head/body.
 """
-import re, sys, pathlib
+import re, sys, pathlib, base64, mimetypes
 
 SRC = pathlib.Path(__file__).resolve().parent
 OUT = pathlib.Path(sys.argv[1])
@@ -41,6 +41,23 @@ def rewrite_stacked(html):
 
 rewrite = rewrite_stacked if STANDALONE else rewrite_routed
 
+def inline_images(html):
+    """Fold <img src="assets/..."> into data URIs.
+
+    The standalone file travels on its own — as a mail attachment or a copy on
+    someone's desktop — so a relative path to assets/images resolves to nothing
+    and the portraits come through broken.
+    """
+    def sub(m):
+        rel = m.group(1)
+        f = SRC / rel
+        if not f.exists():
+            raise SystemExit("build-preview: missing image %s" % rel)
+        mime = mimetypes.guess_type(f.name)[0] or "application/octet-stream"
+        b64 = base64.b64encode(f.read_bytes()).decode("ascii")
+        return 'src="data:%s;base64,%s"' % (mime, b64)
+    return re.sub(r'src="(assets/[^"]+)"', sub, html)
+
 def main_of(fn):
     return re.search(r"<main>(.*?)</main>", (SRC / fn).read_text(), re.S).group(1)
 
@@ -61,7 +78,7 @@ a:focus-visible,summary:focus-visible,.cta-tri__item:focus-visible{
 
 if STANDALONE:
     body = "\n".join(
-        '<section class="doc-section" id="%s">%s</section>' % (k, rewrite(main_of(f)))
+        '<section class="doc-section" id="%s">%s</section>' % (k, inline_images(rewrite(main_of(f))))
         for k, f in PAGES)
     extra = COMMON + """
 /* one continuous document — no JS, every section always visible */
