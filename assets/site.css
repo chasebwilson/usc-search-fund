@@ -210,6 +210,16 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
 
 /* ----------------------------------------------------------------- hero -- */
 .hero{ padding-block:clamp(5rem,13vw,10rem) clamp(3.5rem,7vw,5.5rem); }
+/* Single column by default; the logo takes the right-hand whitespace on wide screens. */
+.hero__top{ display:grid; gap:clamp(2.75rem,5vw,4.5rem); align-items:center; }
+/* The logo is intrinsically 960px wide. Without this the auto track sizes to that
+   and the whole page scrolls sideways on a phone. */
+.hero__top > *{ min-width:0; }
+.hero__logo{ width:260px; max-width:100%; height:auto; justify-self:start; }
+@media (min-width:900px){
+  .hero__top{ grid-template-columns:minmax(0,1fr) minmax(210px,300px); }
+  .hero__logo{ width:100%; justify-self:end; }
+}
 .hero__title{ max-width:16ch; }
 .hero__title span{ display:block; }
 .hero__lede{ max-width:60ch; margin-top:1.9rem; }
