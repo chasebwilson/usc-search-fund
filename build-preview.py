@@ -65,6 +65,9 @@ css = (SRC / "assets/site.css").read_text()
 src = (SRC / "index.html").read_text()
 masthead = rewrite(re.search(r'<header class="masthead">.*?</header>', src, re.S).group(0))
 masthead = masthead.replace(' aria-current="page"', '')
+if STANDALONE:
+    # The masthead carries the logo, and this file travels without its assets.
+    masthead = inline_images(masthead)
 footer = rewrite(re.search(r'<footer class="footer">.*?</footer>', src, re.S).group(0))
 
 COMMON = """

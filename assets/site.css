@@ -119,6 +119,8 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
   height:64px; display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
 }
 .brand{ display:flex; align-items:baseline; gap:.6rem; color:var(--ink); text-decoration:none; }
+/* The mark and sub sit on a shared baseline; the logo centres against them instead. */
+.brand__logo{ height:34px; width:auto; align-self:center; display:block; flex:none; }
 .brand:hover{ text-decoration:none; }
 .brand__mark{
   font-family:var(--serif); font-weight:600; font-size:1.1875rem;
