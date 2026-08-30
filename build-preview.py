@@ -18,11 +18,12 @@ STANDALONE = "--standalone" in sys.argv
 
 PAGES = [("home", "index.html"), ("program", "program.html"),
          ("students", "students.html"), ("searchers", "searchers.html"),
-         ("investors", "investors.html")]
+         ("investors", "investors.html"), ("press", "press.html")]
 NAMES = {"home": "Home", "program": "The Program", "students": "For Students",
-         "searchers": "For Searchers", "investors": "For Investors"}
+         "searchers": "For Searchers", "investors": "For Investors",
+         "press": "Press & Events"}
 
-PAGE_RE = r'href="(index|program|students|searchers|investors)\.html(?:#([\w-]+))?"'
+PAGE_RE = r'href="(index|program|students|searchers|investors|press)\.html(?:#([\w-]+))?"'
 
 def rewrite_routed(html):
     def sub(m):
@@ -58,6 +59,22 @@ def inline_images(html):
         return 'src="data:%s;base64,%s"' % (mime, b64)
     return re.sub(r'src="(assets/[^"]+)"', sub, html)
 
+def links_for_video(html):
+    """Replace each video iframe with a plain link to YouTube.
+
+    The standalone file is opened as a mail attachment or from disk. iOS Mail's
+    preview blocks iframes outright, so an embed renders as an empty box with no
+    hint that a video was ever there. A link survives everywhere.
+    """
+    def sub(m):
+        vid = m.group(1)
+        return ('<a class="video__fallback" '
+                'href="https://www.youtube.com/watch?v=%s">&#9654;&nbsp; Watch on YouTube</a>' % vid)
+    return re.sub(
+        r'<div class="video__frame">\s*<iframe src="https://www\.youtube-nocookie\.com/embed/([\w-]+)".*?</iframe>\s*</div>',
+        sub, html, flags=re.S)
+
+
 def main_of(fn):
     return re.search(r"<main>(.*?)</main>", (SRC / fn).read_text(), re.S).group(1)
 
@@ -81,7 +98,7 @@ a:focus-visible,summary:focus-visible,.cta-tri__item:focus-visible{
 
 if STANDALONE:
     body = "\n".join(
-        '<section class="doc-section" id="%s">%s</section>' % (k, inline_images(rewrite(main_of(f))))
+        '<section class="doc-section" id="%s">%s</section>' % (k, links_for_video(inline_images(rewrite(main_of(f)))))
         for k, f in PAGES)
     extra = COMMON + """
 /* one continuous document — no JS, every section always visible */
@@ -122,8 +139,8 @@ else:
     script = """
 <script>
 (function () {
-  var PAGES = ["home","program","students","searchers","investors"];
-  var TITLES = { program:"The Program", students:"For Students", searchers:"For Searchers", investors:"For Investors" };
+  var PAGES = ["home","program","students","searchers","investors","press"];
+  var TITLES = { program:"The Program", students:"For Students", searchers:"For Searchers", investors:"For Investors", press:"Press & Events" };
   var links = document.querySelectorAll('.masthead a[href^="#/"]');
 
   function route() {

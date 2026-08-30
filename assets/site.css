@@ -130,7 +130,9 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
   font-size:.6875rem; letter-spacing:.11em; text-transform:uppercase;
   color:var(--ink-4); font-weight:500; white-space:nowrap;
 }
-.nav{ display:flex; align-items:center; gap:clamp(1rem,2.4vw,2.1rem); }
+/* Six nav items now. The masthead inner is capped at --maxw, so the space
+   available does not grow on wider screens — the gap has to give. */
+.nav{ display:flex; align-items:center; gap:clamp(.8rem,1.85vw,1.6rem); }
 .nav a{
   font-size:.875rem; font-weight:450; color:var(--ink-2);
   letter-spacing:-.002em; white-space:nowrap; text-decoration:none;
@@ -310,6 +312,24 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
   width:100%; height:100%; object-fit:cover; display:block;
 }
 
+/* LinkedIn link under each bio. Small, quiet, cardinal — the bio is the content,
+   this is a way out to the person. Icon is inline SVG so the page stays
+   dependency-free and offline-safe in the standalone build. */
+.person__link{
+  display:inline-flex; align-items:center; gap:.45rem;
+  margin-top:.9rem; font-size:.8125rem; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase;
+  color:var(--cardinal); text-decoration:none;
+}
+.person__link svg{ width:14px; height:14px; fill:currentColor; flex:none; }
+.person__link:hover{ text-decoration:underline; text-underline-offset:3px; }
+/* Visually hidden, still read aloud — lets two identical "LinkedIn" links
+   announce whose profile they point to. */
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
 /* ------------------------------------------------------------------ FAQ -- */
 .faq{ border-top:1px solid var(--line); }
 .faq details{ border-bottom:1px solid var(--line); }
@@ -345,6 +365,24 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
 }
 .deflist dd{ margin:0 0 1.35rem; font-size:.9688rem; color:var(--ink-2); }
 .deflist dd:last-child{ margin-bottom:0; }
+
+/* Linked resource titles. On the dark band the title text is already white and
+   site-wide links carry no underline, so a link would be invisible as a link —
+   this restores the affordance without shouting. Gold on hover, matching the
+   accent the dark sections already use. */
+.deflist dt a{
+  color:inherit; text-decoration:underline;
+  text-decoration-color:rgba(0,0,0,.3);
+  text-underline-offset:4px; text-decoration-thickness:1px;
+  transition:color .18s var(--ease), text-decoration-color .18s var(--ease);
+}
+.deflist dt a:hover{
+  color:var(--cardinal); text-decoration-color:var(--cardinal);
+}
+/* Same list on a dark band: the rule above would draw a black underline on
+   near-black. Flip it to white, and hover to the gold the dark sections use. */
+.dark .deflist dt a{ text-decoration-color:rgba(255,255,255,.35); }
+.dark .deflist dt a:hover{ color:var(--gold); text-decoration-color:var(--gold); }
 
 /* ------------------------------------------------------------------ CTA -- */
 .cta-tri{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid var(--line); }
@@ -398,3 +436,57 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
 @media (prefers-reduced-motion:reduce){
   *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
 }
+
+/* --------------------------------------------------------------- video -- */
+/* Embeds are lazy: six players is ~1MB of YouTube script if they all load at
+   once, and most visitors never scroll to the grid. youtube-nocookie defers
+   tracking cookies until someone actually presses play. */
+.video{ margin:0; }
+.video__frame{
+  position:relative; aspect-ratio:16/9; overflow:hidden;
+  border-radius:10px; background:var(--bg-alt);
+  border:1px solid var(--line-2);
+}
+.video__frame iframe{
+  position:absolute; inset:0; width:100%; height:100%; border:0; display:block;
+}
+.video__cap{ margin-top:.9rem; }
+.video__name{
+  display:block; font-family:var(--serif); font-size:1.0625rem;
+  font-weight:600; letter-spacing:-.008em; color:var(--ink);
+}
+.video__co{
+  display:block; margin-top:.25rem; font-size:.8125rem; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--cardinal);
+}
+.video-grid{ margin-top:clamp(2.5rem,5vw,3.5rem); }
+
+/* The featured single video runs wider than a grid tile, so cap it or it
+   swamps the section it sits in. */
+.video--feature .video__frame{ border-radius:12px; }
+.video--feature .video__name{ font-size:1.25rem; }
+
+/* Standalone build: no iframe, a link to YouTube instead. */
+.video__fallback{
+  display:flex; align-items:center; justify-content:center; gap:.6rem;
+  aspect-ratio:16/9; border-radius:10px; background:var(--bg-alt);
+  border:1px solid var(--line-2); color:var(--cardinal);
+  font-weight:600; font-size:.9375rem; text-align:center; padding:1rem;
+}
+
+@media (max-width:900px){
+  .video-grid.grid--3{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:620px){
+  .video-grid.grid--3{ grid-template-columns:1fr; }
+}
+
+/* ------------------------------------------------------ conferences -- */
+/* Month and city ride alongside the conference name. Dates themselves stay
+   off the page on purpose — they move every year and the host site is the
+   source of truth. */
+.conf__when,.item__meta{
+  display:block; margin-top:.3rem; font-size:.75rem; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3);
+}
+.deflist dt strong{ color:var(--ink); font-weight:600; }

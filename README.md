@@ -1,19 +1,27 @@
 # USC Search Fund — website
 
-Static site. No build step, no dependencies. Four pages plus one stylesheet.
+Static site. No build step, no dependencies. Six pages plus one stylesheet.
 
 ```
-index.html       Home
+index.html       Home (incl. featured searcher video)
 program.html     The Program (BAEP-560, semester arc, leadership, vision)
-students.html    For Students (why search, straight talk, how to join, resources, FAQ)
+students.html    For Students (why search, straight talk, how to join, resources,
+                 searcher videos, FAQ)
 searchers.html   For Searchers (network, the three search structures, SoCal market)
 investors.html   For Investors (ways to engage, the fund ambition, ecosystem, owners, contact)
+press.html       Press & Events (ETA conference calendar, press coverage)
 assets/site.css  All styling
 ```
 
 Navigation is three audience tracks — students, searchers, investors — plus a program
-overview. Business owners live in a section on the investors page rather than owning a
-page of their own.
+overview and Press & Events. Business owners live in a section on the investors page
+rather than owning a page of their own.
+
+The nav label for `press.html` is just **"Press"**, deliberately. Six items plus the
+brand and its "Greif Center · Marshall" subtitle overflow `.masthead__inner`, which is
+capped at `--maxw` (1120px) and so does not gain room on wider screens. "Press & Events"
+made "Home" overlap the subtitle on every desktop width. If a seventh nav item is ever
+added, the masthead needs rethinking, not another shortened label.
 
 ## Picking this back up later
 
@@ -41,23 +49,69 @@ cd ~/Desktop/Marshall/usc-search-fund && python3 -m http.server 8899
 Any static host works. GitHub Pages, Netlify, Vercel, or Cloudflare Pages — drop the
 folder in, no configuration needed.
 
-## TO FILL IN before this goes public
+## Still open
 
-1. **Contact email** — `investors.html` has `REPLACE@usc.edu` in two places (the mailto
-   link and the button label). Search for `REPLACE`.
-2. **Instructor bios** — `program.html#leadership` has one-paragraph placeholders for
-   Dustin Sellers and Chris Lueck written from limited information. Get their real bios
-   and headshots. The portrait slots are `<div class="person__portrait">Portrait</div>` —
-   swap for `<img>`.
-3. **Semester arc** — `program.html` week groupings are indicative, drawn from the
+1. **Semester arc** — `program.html` week groupings are indicative, drawn from the
    Fall 2026 syllabus and the Class 6 Sourcing Sprint. Confirm against the real schedule.
-4. **Greif Center link** — verify the URL in `program.html` still resolves.
-5. **Naming and approval** — "USC Search Fund," the Greif Center affiliation, and the
+2. **Naming and approval** — "USC Search Fund," the Greif Center affiliation, and the
    USC cardinal palette all imply institutional endorsement. Marshall has a brand/trademark
-   review process for anything using the USC name publicly. Worth clearing with Dustin
-   and the Greif Center before this is indexed.
+   review process for anything using the USC name publicly. In flight with Dustin and the
+   Greif Center.
+3. **Two claims on `press.html` that Dustin should sanity-check** — the Booth–Kellogg
+   entry says "north of 900 attendees," and the Wharton entry is characterised as
+   "denser on institutional investors than most." Both came from research, not from
+   anyone who has attended. Easy to soften if wrong.
+4. **NYT headline** — the 2009 New York Times piece on `press.html` uses the title
+   Dustin supplied, "Paying Entrepreneurs to Find the Right Business." The URL resolves
+   (403, i.e. paywalled, not 404) but the headline itself was never independently
+   verified — nytimes.com blocks automated access.
+5. **Speaker permission for the videos** — the six clips were recorded for a class and
+   are now on a public page. Confirm each speaker is fine with that. Dustin's call.
 6. **Footer disclaimer** — "Not an offer to sell or a solicitation to buy any security"
    is there deliberately, because the site references a future fund. Keep it.
+
+## Done (do not redo)
+
+- **Contact email** — `info@uscsearchfund.org` is live, a Hostinger Starter Business
+  Email mailbox. No `REPLACE` placeholders remain anywhere.
+- **Instructor bios and headshots** — both real, both `<img>`. Dustin's bio was supplied
+  verbatim by him on 2026-08-30 and his firm is **NCL Partners** (formerly Next Coast
+  Legacy — the Search Party podcast materials still say the old name). Chris's bio is
+  shorter than Dustin's on purpose; Dustin asked for his own wording kept as-is.
+- **Greif Center link** — verified resolving 2026-08-30.
+
+## Editorial rules established 2026-08-30
+
+These were deliberate. Undoing them without knowing why will make the site worse.
+
+- **Books link to publishers, never Amazon.** `store.hbr.org` for the HBR Guide,
+  `lioncrest.com` for Buy Then Build. Amazon reads as commerce on a university page and
+  ASINs rot. Note that `buythenbuild.com` was rejected specifically because its landing
+  page is an email-capture funnel into paid courses and its own "Book" link is an Amazon
+  affiliate URL.
+- **Conferences link to host sites, never a single year's event page.** Dates move
+  annually; `socaletaconference.com` will surface the current edition on its own. This
+  is what keeps `press.html` from rotting after handoff. Month and city are on the page;
+  specific dates deliberately are not.
+- **The Stanford study links to the evergreen CES landing page**, while the homepage
+  stats band cites the specific 2026 study its figures came from. Both are correct for
+  their purpose — do not "fix" one to match the other.
+- **Videos are never committed to this repo.** They live on the `@USCETA` YouTube
+  channel, unlisted, embedded via `youtube-nocookie` with `loading="lazy"`. The source
+  files are ~260MB each at 17Mbps — over GitHub's 100MB hard file limit, and six of them
+  would be ~1.6GB against a repo that is otherwise ~2MB.
+- **`.deflist dt a` has separate light and dark underline colours.** The dark variant
+  exists for the resources band on `students.html`. Setting one without the other makes
+  links invisible on one background or the other — this shipped broken once.
+
+## Provenance
+
+- LinkedIn URLs for Dustin and Chris came directly from Chase, 2026-08-30.
+- The WSJ, FT, and NYT article URLs came directly from Chase — those three domains block
+  automated access, so they cannot be re-derived by searching.
+- The other nine press URLs were found and verified by request. Four of them
+  (Bloomberg, both Fast Company pieces, Forbes 2014) return 403 to automated checks;
+  that is bot-blocking, not a dead link.
 
 ## Data sources
 
@@ -76,6 +130,11 @@ cited inline. Refresh when the next study publishes.
 - All layout is CSS grid with breakpoints at 900px, 760px, and 420px.
 - Below 900px the desktop nav is replaced by a `<details>` disclosure menu (no JS).
   Verified at 390 / 430 / 768px: standards mode, zero horizontally overflowing elements.
+- The video grid deliberately breaks the site pattern: every other grid collapses to one
+  column below 900px, but `.video-grid` stays 2-up until 620px. Six full-width videos on
+  a tablet is an endless scroll, and 16:9 thumbnails stay legible at ~320px where body
+  text would not. Desktop layout verified 2026-08-30; **mobile rendering of the video
+  grid was never visually confirmed** — the browser tooling would not resize the viewport.
 
 ## Sharing a single-file copy
 
@@ -95,7 +154,11 @@ different — do not confuse them:
 
 **default** — for the hosted artifact/embed.
 - No document wrapper; the host supplies doctype/head/body.
-- JS hash routing, five switchable pages.
+- JS hash routing, six switchable pages.
+
+Both forms strip the YouTube iframes via `links_for_video()` and replace each with a
+plain "Watch on YouTube" link. iOS Mail's preview blocks iframes outright, so an embed
+renders as an empty box with no hint a video was ever there.
 
 All three bugs above shipped at least once. The standalone form is verified by loading it
 in an iframe with `sandbox="allow-same-origin"` (scripts disabled) and asserting: zero
