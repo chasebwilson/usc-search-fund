@@ -80,6 +80,36 @@ folder in, no configuration needed.
   shorter than Dustin's on purpose; Dustin asked for his own wording kept as-is.
 - **Greif Center link** — verified resolving 2026-08-30.
 
+## Time-bound: ETA Bootcamp, 2026-10-23 — REMOVE AFTER THE EVENT
+
+The only dated content on the site. Two places, and they come down together:
+
+1. `index.html` — the `<aside class="announce">` strip under the hero. Delete the
+   whole block; nothing else depends on it.
+2. `press.html` — `<section id="bootcamp">`, the first section after the hero.
+   Delete it, and delete `assets/images/eta-bootcamp-2026.jpg` and
+   `assets/eta-bootcamp-2026-flier.pdf` with it.
+
+Then drop the `dated event` block at the foot of `assets/site.css` and re-run
+`build-preview.py --standalone`.
+
+The conference rule below says dates stay off the page. That rule is about the
+circuit — annual events whose dates move, where the host site is the source of
+truth. This is USC's own one-day event with a fixed date and a ticket link, so
+the date and the registration URL belong on the page. The two are not in conflict.
+
+**Registration links to Eventbrite directly**, not the `bit.ly/USC_ETA_BOOTCAMP`
+shortener printed on the flier. Same destination
+(`eventbrite.com/e/eta-bootcamp-tickets-1998819237145`); the shortener is one more
+thing that can rot or be retargeted, and a redirect of unknown destination does not
+belong on a university page. The flier PDF still shows the bit.ly — that is fine,
+it is the printed artwork.
+
+`build-preview.py` gained `drop_file_links()` for this: it strips the "Download the
+flier" button from the standalone build. `inline_images()` folds `<img src="assets/…">`
+into data URIs, but an `<a href="assets/….pdf">` stays a relative path, and that file
+travels alone — the button would 404 for everyone who opened it from mail.
+
 ## Editorial rules established 2026-08-30
 
 These were deliberate. Undoing them without knowing why will make the site worse.

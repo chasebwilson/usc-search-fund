@@ -75,6 +75,18 @@ def links_for_video(html):
         sub, html, flags=re.S)
 
 
+def drop_file_links(html):
+    """Remove buttons that point at asset files this copy does not carry.
+
+    inline_images() folds <img src="assets/..."> into the document, but an
+    <a href="assets/....pdf"> stays a relative path — and this file travels
+    alone, as a mail attachment or a copy on someone's desktop, so the link
+    resolves to nothing. The one case is the bootcamp flier, whose poster is
+    inlined directly above the button anyway.
+    """
+    return re.sub(r'\s*<a class="btn[^"]*" href="assets/[^"]+"[^>]*>.*?</a>',
+                  '', html, flags=re.S)
+
 def main_of(fn):
     return re.search(r"<main>(.*?)</main>", (SRC / fn).read_text(), re.S).group(1)
 
@@ -98,7 +110,7 @@ a:focus-visible,summary:focus-visible,.cta-tri__item:focus-visible{
 
 if STANDALONE:
     body = "\n".join(
-        '<section class="doc-section" id="%s">%s</section>' % (k, links_for_video(inline_images(rewrite(main_of(f)))))
+        '<section class="doc-section" id="%s">%s</section>' % (k, links_for_video(inline_images(drop_file_links(rewrite(main_of(f))))))
         for k, f in PAGES)
     extra = COMMON + """
 /* one continuous document — no JS, every section always visible */
