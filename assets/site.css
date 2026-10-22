@@ -384,6 +384,27 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
 .dark .deflist dt a{ text-decoration-color:rgba(255,255,255,.35); }
 .dark .deflist dt a:hover{ color:var(--gold); text-decoration-color:var(--gold); }
 
+/* Investor directory on the Resources band. Thirty-odd short names read best
+   as a multi-column index rather than a deflist; same underline treatment. */
+.investors{
+  margin-top:clamp(3rem,6vw,4.5rem); padding-top:clamp(2rem,4vw,2.75rem);
+  border-top:1px solid rgba(255,255,255,.18);
+}
+.investors__intro{ max-width:60ch; margin-top:.75rem; }
+.investor-list{
+  list-style:none; padding:0; margin:clamp(1.5rem,3vw,2rem) 0 0;
+  columns:4; column-gap:clamp(1.5rem,3vw,2.5rem);
+}
+.investor-list li{ break-inside:avoid; padding-block:.4rem; font-size:.9688rem; }
+.investor-list a{
+  text-decoration:underline; text-decoration-color:rgba(255,255,255,.35);
+  text-underline-offset:4px; text-decoration-thickness:1px;
+  transition:color .18s var(--ease), text-decoration-color .18s var(--ease);
+}
+.investor-list a:hover{ color:var(--gold); text-decoration-color:var(--gold); }
+@media (max-width:900px){ .investor-list{ columns:3; } }
+@media (max-width:620px){ .investor-list{ columns:2; } }
+
 /* ------------------------------------------------------------------ CTA -- */
 .cta-tri{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid var(--line); }
 .cta-tri__item{
