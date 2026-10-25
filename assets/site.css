@@ -511,3 +511,17 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
   letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3);
 }
 .deflist dt strong{ color:var(--ink); font-weight:600; }
+
+/* ------------------------------------------------------- dated event -- */
+/* TIME-BOUND: the ETA Bootcamp thank-you. Comes down with the markup; see README. */
+.thanks{ padding-bottom:clamp(3.5rem,7vw,5.5rem); }
+.thanks__link{
+  display:block; border-radius:14px; overflow:hidden;
+  box-shadow:0 18px 40px -22px rgba(60,0,0,.55);
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.thanks__link:hover{ transform:translateY(-2px); box-shadow:0 24px 48px -22px rgba(60,0,0,.6); }
+.thanks__link img{ display:block; width:100%; height:auto; }
+.recap{ align-items:center; }
+.recap__img{ width:100%; height:auto; border-radius:14px; }
+@media (max-width:900px){ .recap__img{ max-width:440px; } }

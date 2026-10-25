@@ -80,6 +80,20 @@ folder in, no configuration needed.
   shorter than Dustin's on purpose; Dustin asked for his own wording kept as-is.
 - **Greif Center link** — verified resolving 2026-08-30.
 
+## Time-bound: ETA Bootcamp thank-you (event was 2026-10-23)
+
+The only dated content on the site. Take it down once the follow-up push is over
+(a few weeks out). Three places, and they come down together:
+
+1. `index.html` — the `<section class="wrap thanks">` banner under the hero.
+2. `press.html` — `<section id="bootcamp">`, the recap right after the hero. Put
+   `<hr class="rule wrap">` back in its place.
+3. `assets/site.css` — the `dated event` block at the foot.
+
+Then delete `assets/images/eta-bootcamp-2026-thanks-wide.jpg` and
+`-thanks-square.jpg`. The source template for both lives outside the repo, in
+`~/Desktop/ETA Bootcamp Graphics/source/`.
+
 ## Editorial rules established 2026-08-30
 
 These were deliberate. Undoing them without knowing why will make the site worse.
